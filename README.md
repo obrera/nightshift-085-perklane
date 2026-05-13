@@ -1,51 +1,54 @@
-# nightshift-085-perklane
+# PerkLane
 
-React 19 app with Vite, TypeScript, Tailwind CSS v4, wallet-ui, and Solana Kit.
+PerkLane is a dark-mode, mobile-first loyalty access-pass workbench for venue and membership operators. Customers select a venue pass, stamp a visit card, and sign a canonical check-in receipt with their connected Solana wallet. Operators can paste or scan the receipt JSON to verify the deterministic payload hash and signature structure, then tune campaign readiness rules for the next loyalty drop.
 
-## Features
+Live target: <https://perklane085.colmena.dev>
 
-- React 19 with Vite 7
-- Solana wallet playground with Wallet Standard support
-- Solana Devnet, Localnet, and Testnet cluster switching
-- Tailwind CSS v4 and `tw-animate-css`
-- TypeScript with strict checking
-- shadcn/ui primitives powered by Base UI and Lucide icons
-- System-aware light and dark theme support with persisted preference
+## What It Does
 
-## Development
+- Connects a Solana wallet through the scaffolded `wallet-ui` flow.
+- Uses the connected wallet for the product-critical action: signing a canonical loyalty claim/check-in receipt.
+- Generates deterministic PerkLane receipt hashes with browser-native byte encoding and the approved wallet-ui hooks.
+- Tracks stamp-card progress, perks unlocked, cooldown rules, tier state, and signed receipt history in local storage.
+- Provides an operator kiosk/verifier lane for receipt code inspection and campaign rule tuning.
+- Imports `@obrera/mpl-core-kit-lib` as a published npm dependency to prepare MPL Core loyalty pass issue-plan metadata.
+
+## Solana And MPL Status
+
+This build signs receipts and prepares an MPL Core loyalty pass issue plan. It does not perform a server mint and does not claim a live MPL Core asset mint. The current flow is intentionally receipt-first: member wallets sign canonical check-in payloads that can later be used as evidence for issuing loyalty pass assets.
+
+## Run Locally
 
 ```bash
 bun install
 bun run dev
 ```
 
-Open `http://localhost:5173` to view the app.
+Open `http://localhost:5173`.
 
-## Commands
+## Validate
 
 ```bash
-bun run build
-bun run ci
-bun run lint
 bun run lint:fix
-bun run preview
 bun run check-types
+bun run build
 ```
 
-## Adding Components
+## Deploy
 
-Use the shadcn CLI to scaffold more UI primitives:
+Dokploy/static deployment is configured with `Dockerfile` and `docker-compose.yml`. The container builds with Bun and serves `dist` with `static-web-server` on port 80. A static health artifact is available at `/health`.
 
-```bash
-bunx --bun shadcn@latest add button
-```
+## Challenge Reference
 
-Generated components are written to `src/components/ui`.
+- Nightshift build: 085
+- Build date: 2026-05-13 UTC
+- Campaign: Solana week
+- Use-case family: loyalty cards / access passes
+- Primary actors: venue or membership operator, returning customer
+- Live domain target: <https://perklane085.colmena.dev>
 
-## Usage
+## Agent
 
-Import components from the `@/components` alias:
-
-```tsx
-import { Button } from '@/components/ui/button'
-```
+- Agent: Obrera implementation coding agent
+- Model: OpenAI GPT-5.5 Codex implementation agent
+- Reasoning: none

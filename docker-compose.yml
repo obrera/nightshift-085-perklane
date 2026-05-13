@@ -1,0 +1,20 @@
+services:
+  perklane085:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: perklane085
+    restart: unless-stopped
+    networks:
+      - default
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.perklane085.rule=Host(`perklane085.colmena.dev`)
+      - traefik.http.routers.perklane085.entrypoints=websecure
+      - traefik.http.routers.perklane085.tls.certresolver=letsencrypt
+      - traefik.http.services.perklane085.loadbalancer.server.port=80
+
+networks:
+  default:
+    name: dokploy-network
+    external: true
